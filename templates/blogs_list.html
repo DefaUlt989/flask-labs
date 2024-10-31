@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-end">
+                <button onclick="sortByDate()" class="btn btn-primary btn-sm me-2">Sort by date</button>
+                <button onclick="sortByTitle()" class="btn btn-primary btn-sm">Sort by title</button>
+            </div>
+        </div>
+
+        <div class="row" id="articles-container">
+            {% for blog in blogs %}
+                <div class="col-12 article-card"
+                     data-title="{{ blog.title }}"
+                     data-date="{{ blog.created.strftime('%Y-%m-%d') }}">
+                    <a href="{{ url_for("blog", blog_id=blog.id) }}" class="article-link">
+                        <div class="d-flex">
+                            <div class="article-content">
+                                <h2>{{ blog.title }}</h2>
+                                <p>{{ blog.content | truncate(50) }}</p>
+                            </div>
+                            <div class="article-image-container">
+                                {% if blog.image %}
+                                    <div class="article-image">
+                                        <img src="{{ url_for("static", filename=blog.image) }}" alt="image" width="100" height="100">
+                                    </div>
+                                {% endif %}
+                                <p class="text-muted mt-2">By {{ blog.author.username }}</p>
+                                <p class="text-muted mb-0">{{ blog.created.strftime('%Y-%m-%d') }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+    function sortByDate() {
+        const container = document.getElementById('articles-container');
+        const articles = Array.from(container.getElementsByClassName('article-card'));
+
+        articles.sort((a, b) => {
+            return new Date(b.dataset.date) - new Date(a.dataset.date);
+        });
+
+        articles.forEach(article => container.appendChild(article));
+    }
+
+    function sortByTitle() {
+        const container = document.getElementById('articles-container');
+        const articles = Array.from(container.getElementsByClassName('article-card'));
+
+        articles.sort((a, b) => {
+            return a.dataset.title.localeCompare(b.dataset.title);
+        });
+
+        articles.forEach(article => container.appendChild(article));
+    }
+</script>
+
+{% endblock %}

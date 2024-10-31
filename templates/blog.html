@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block custom_styles %}
+	<link rel="stylesheet" href="/static/css/blog-style.css">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="article-container">
+            <h1 class="article-title">{{ blog.title }}</h1>
+            <div class="article-content">
+                <div class="article-text">
+                    <p>{{ blog.content }}</p>
+                </div>
+                {% if blog.image %}
+                <div class="article-photo">
+                    <img src="{{ url_for("static", filename=blog.image) }}" width="200" height="200" alt="blog-image">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+.article-container {
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.article-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.article-content {
+    display: flex;
+}
+
+.article-text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.article-photo {
+    width: 200px;
+    height: 200px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+}
