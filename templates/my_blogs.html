@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container mt-5">
+    <a type="button" href="{{ url_for('create_blog') }}" class="btn btn-primary mb-3 float-end me-3">+ New</a>
     <table class="table">
   <thead>
     <tr>
@@ -24,4 +26,5 @@
   {% endfor %}
   </tbody>
 </table>
+</div>
 {% endblock %}

@@ -122,7 +122,7 @@ def edit_blog(blog_id):
         blog.title = edit_form.title.data
         blog.content = edit_form.content.data
         db.session.commit()
-        flash('Блог успішно оновлено!', 'success')
+        flash('Blog update successful!', 'success')
         return redirect(url_for('edit_blog', blog_id=blog.id))
 
     if request.method == 'GET':
@@ -163,7 +163,7 @@ def create_blog():
         db.session.commit()
         flash('Blog post created successfully!', 'success')
         return redirect(url_for('create_blog'))
-    return render_template('create_blog.html', form=form, active_page='blog-create')
+    return render_template('create_blog.html', form=form)
 
 
 @app.route('/blogs-all')
