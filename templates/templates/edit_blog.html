@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('edit_blog', blog_id=blog.id) }}">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            <h1 class="text-center">Edit Blog</h1>
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.content.label(class="form-label", for="exampleFormControlTextarea1") }}
+            {{ form.content(class="form-control", id="exampleFormControlTextarea1", rows="20") }}
+        </div>
+
+        {{ form.submit(class="btn btn-primary w-100") }}
+    </form>
+
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}

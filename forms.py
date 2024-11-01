@@ -38,3 +38,8 @@ class EditBlogForm(FlaskForm):
     title = StringField('Title', validators=[InputRequired()])
     content = TextAreaField('Content', validators=[InputRequired()])
     submit = SubmitField('Update')
+
+
+class UpdateProfileImg(FlaskForm):
+    image = FileField('Image', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update')

@@ -16,7 +16,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asjhfoijasoifjasoijw'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['UPLOAD_EXTENSIONS'] = ['jpg', 'png', 'jpeg']
-app.config['UPLOAD_FOLDER'] = 'static/images/'
+app.config['UPLOAD_ARTICLE_FOLDER'] = 'static/images/article'
+app.config['UPLOAD_PROFILE_FOLDER'] = 'static/images/profile'
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -33,6 +35,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(80), nullable=False)
     blogs = db.relationship('Blog', backref='author', cascade="all, delete-orphan")
     is_active = db.Column(db.Boolean, default=True)
+    profile_image = db.Column(db.String(80))
+
 
 
 class Blog(db.Model):
@@ -99,8 +103,28 @@ def profile(username):
     user = User.query.filter_by(username=username).first()
     if user == None:
         abort(404)
+    form = UpdateProfileImg()
+    if form.validate_on_submit():
+        user_id = current_user.id
+        if current_user.username != username:
+            flash('invalid username', 'error')
+            return redirect(url_for('profile', username=username))
 
-    return render_template('profile.html', active_page='profile', user=user)
+        image = form.image.data
+        filename = secure_filename(image.filename)
+        name, extension = os.path.splitext(filename)
+
+        unique_filename = f"{user_id}_{name}{extension}"
+
+        file_path = os.path.join(app.config['UPLOAD_PROFILE_FOLDER'], unique_filename)
+        image.save(file_path)
+
+        user.profile_image = unique_filename
+        db.session.commit()
+        flash('Your profile has been updated!', 'success')
+        return redirect(url_for('profile', username=username))
+
+    return render_template('profile.html', active_page='profile', user=user, form=form)
 
 @app.route('/my-blogs/')
 @login_required
@@ -122,7 +146,7 @@ def edit_blog(blog_id):
         blog.title = edit_form.title.data
         blog.content = edit_form.content.data
         db.session.commit()
-        flash('Blog update successful!', 'success')
+        flash('Блог успішно оновлено!', 'success')
         return redirect(url_for('edit_blog', blog_id=blog.id))
 
     if request.method == 'GET':
@@ -155,15 +179,15 @@ def create_blog():
         image = form.image.data
         if image:
             filename = secure_filename(image.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image_path = os.path.join(app.config['UPLOAD_ARTICLE_FOLDER'], filename)
             image.save(image_path)
-            new_blog.image = f"images/{filename}"
+            new_blog.image = filename
 
         db.session.add(new_blog)
         db.session.commit()
         flash('Blog post created successfully!', 'success')
         return redirect(url_for('create_blog'))
-    return render_template('create_blog.html', form=form)
+    return render_template('create_blog.html', form=form, active_page='blog-create')
 
 
 @app.route('/blogs-all')

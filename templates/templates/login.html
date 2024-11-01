@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="">
+        <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+            <div class="container">
+                <div class="row gx-lg-5 align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h1 class="my-5 display-3 fw-bold ls-tight">
+                            The best offer <br/>
+                            <span class="text-primary">for your business</span>
+                        </h1>
+                        <p style="color: hsl(217, 10%, 50.8%)">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Eveniet, itaque accusantium odio, soluta, corrupti aliquam
+                            quibusdam tempora at cupiditate quis eum maiores libero
+                            veritatis? Dicta facilis sint aliquid ipsum atque?
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="card">
+                            <div class="card-body py-5 px-md-5">
+                                <form method="POST" action="{{ url_for('login') }}">
+                                    {{ form.hidden_tag() }}
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        {{ form.username(class="form-control") }}
+                                        {{ form.username.label(class="form-label") }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        {{ form.password(class="form-control") }}
+                                        {{ form.password.label(class="form-label") }}
+                                    </div>
+                                    <div class="form-check d-flex justify-content-center mb-4">
+                                        {{ form.remember(class="form-check-input me-2") }}
+                                        {{ form.remember.label(class="form-check-label") }}
+                                    </div>
+                                    {{ form.submit( class="btn btn-primary btn-block mb-4") }}
+
+                                </form>
+                            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+                                {% if messages %}
+                                    <div class="mt-3">
+                                        {% for message in messages %}
+                                            <div class="alert alert-error">{{ message }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endwith  %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

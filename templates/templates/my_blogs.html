@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <a type="button" href="{{ url_for('create_blog') }}" class="btn btn-primary mb-3 float-end me-3">+ New</a>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Content</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for blog in my_blogs %}
+    <tr>
+      <th scope="row">{{ blog.id }}</th>
+      <td>{{ blog.title }}</td>
+      <td>{{ blog.content[:50] }}</td>
+      <td>{{ blog.created.strftime('%Y-%m-%d') }}</td>.
+        <td><a href="{{ url_for('edit_blog', blog_id=blog.id) }}" class="btn btn-primary">Edit</a></td>
+    <td><a href="{{ url_for('delete_blog', blog_id=blog.id) }}" class="btn btn-danger">Delete</a></td>
+
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
