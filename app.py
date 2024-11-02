@@ -51,6 +51,7 @@ def registration():
         user.password = generate_password_hash(form.password.data, method='scrypt')
         db.session.add(user)
         db.session.commit()
+        login_user(user, remember=True)
         return redirect(url_for('index'))
 
     return render_template("registration.html", form=form)

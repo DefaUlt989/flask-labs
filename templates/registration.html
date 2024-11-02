@@ -2,7 +2,6 @@
 
 {% block content %}
     <section class="">
-        <!-- Jumbotron -->
         <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
             <div class="container">
                 <div class="row gx-lg-5 align-items-center">
@@ -39,13 +38,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Email input -->
                                     <div data-mdb-input-init class="form-outline mb-4">
                                         {{ form.email(class="form-control") }}
                                         {{ form.email.label(class="form-label") }}
                                     </div>
 
-                                    <!-- Password input -->
                                     <div data-mdb-input-init class="form-outline mb-4">
                                         {{ form.username(class="form-control") }}
                                         {{ form.username.label(class="form-label") }}
@@ -57,7 +54,6 @@
                                     </div>
 
 
-                                    <!-- Submit button -->
                                     {{ form.submit( class="btn btn-primary btn-block mb-4") }}
 
                                 </form>
@@ -67,6 +63,6 @@
                 </div>
             </div>
         </div>
-        <!-- Jumbotron -->
+
     </section>
 {% endblock %}
