@@ -1,16 +1,14 @@
 import os
-from datetime import datetime
-
 from flask import Flask, request, render_template, make_response, redirect, url_for, flash, abort
 from flask_login import login_user, login_required, LoginManager, UserMixin, current_user, logout_user
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-from forms import *
 import json
+
+from models import db, User, Blog
+from forms import *
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asjhfoijasoifjasoijw'
@@ -22,34 +20,9 @@ app.config['UPLOAD_PROFILE_FOLDER'] = 'static/images/profile'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-db = SQLAlchemy(app)
+db.init_app(app)
 migrate = Migrate(app, db)
 
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
-    blogs = db.relationship('Blog', backref='author', cascade="all, delete-orphan")
-    is_active = db.Column(db.Boolean, default=True)
-    profile_image = db.Column(db.String(80))
-
-
-
-class Blog(db.Model):
-    __tablename__ = 'blog'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), unique=True, nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    image = db.Column(db.String(80))
-    created = db.Column(db.DateTime, default=datetime.now)
-
-    def __repr__(self):
-        return '<Blog %r>' % self.title
 
 @login_manager.user_loader
 def load_user(user_id):
